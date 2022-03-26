@@ -9,6 +9,7 @@ const Home = () => {
     const [IsPending, setIsPending]=useState(true);
     const [movies, setmovies]=useState(null);
     const [Err, setErr]=useState(null);
+
     useState(()=>{
         const getMovies= async()=>{
             try{
@@ -17,8 +18,10 @@ const Home = () => {
                     setErr(`Error Code : ${moviesResponse.status} | Message : ${moviesResponse.message}`)
                     setIsPending(false);
                 }else{
-                    console.log(moviesResponse.data.data.results, "THis is state");
-                    setmovies(moviesResponse.data.data.results)
+                    if(!moviesResponse.data?.data?.results){
+                        throw new Error("No Results Found");
+                    }
+                    setmovies(moviesResponse.data?.data?.results)
                     setIsPending(false);
                 }
             }catch(err){
@@ -28,7 +31,6 @@ const Home = () => {
         }
         getMovies();
     },[]);
-
     const searchByName = async(page, query)=>{
         try{
             setmovies(null);
@@ -37,8 +39,10 @@ const Home = () => {
             if(response.status >= 400){
                 setErr(`Error Code : ${response.status} | Message : ${response.message}`)
                 setIsPending(false);
-            }else{
-                console.log(response.data.data.results, "THis is state after search");
+            }else{      
+                if(!response.data?.data?.results){
+                    throw new Error("No Results Found");
+                }          
                 setmovies(response.data.data.results)
                 setIsPending(false);
             }
@@ -47,13 +51,33 @@ const Home = () => {
             setErr(err.message);
         }
     }
+    const sortByDate = () => {
+        let sortedMovies = movies.sort((a, b) => a.release_date.split('-').reverse().join().localeCompare(b.release_date.split('-').reverse().join())); 
+        //To cause react to re-render
+        setmovies([...sortedMovies]);
+    }
+    const sortByPopularity = () => {
+        let sortedMovies = movies.sort((a, b) => b.popularity - a.popularity); 
+        //To cause react to re-render
+        setmovies([...sortedMovies]);
+    }
+    const sortByRatings = () => {
+        let sortedMovies = movies.sort((a, b) => b.vote_average - a.vote_average); 
+        //To cause react to re-render
+        setmovies([...sortedMovies]);
+    }
     return ( 
         <Container className="p-4">
             <Scroll>
                 <Container>
                     <Row>
                         <Col lg={3}>
-                            <SidebarComponent search={searchByName} />
+                            <SidebarComponent 
+                                search={searchByName} 
+                                sortByDate={sortByDate} 
+                                sortByPopularity={sortByPopularity} 
+                                sortByRatings={sortByRatings} 
+                            />
                         </Col>
                         <Col lg={9}>
                             <ThumbnailGridComponent IsPending={IsPending} Err={Err} movies={movies} />

@@ -3,10 +3,20 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
 import { useState } from 'react';
-const SidebarComponent = ({search}) => {
+const SidebarComponent = ({search, sortByDate, sortByPopularity, sortByRatings}) => {
     const [SearchQuery, setSearchQuery] = useState("");
     const handleOnChange = (e) => {
         setSearchQuery(e.target.value);
+    }
+    const handleSortChange = (e) => {
+        const sorter = e.target.value;
+        console.log(sorter, "THis is event");
+        switch(sorter){
+            case "sortByDate" : sortByDate();break;
+            case "sortByPopularity" : sortByPopularity();break;
+            case "sortByRatings" : sortByRatings();break;
+            default : break;
+        }
     }
     return ( 
         <Accordion defaultActiveKey="search">
@@ -29,11 +39,11 @@ const SidebarComponent = ({search}) => {
             <Accordion.Item eventKey="sort">
                 <Accordion.Header>Sort</Accordion.Header>
                 <Accordion.Body>
-                    <Form.Select aria-label="Sort By -">
+                    <Form.Select aria-label="Sort By -" onChange={handleSortChange}>
                         <option>--Sort By--</option>
-                        <option value="1">Release Date</option>
-                        <option value="2">Popularity</option>
-                        <option value="3">Ratings</option>
+                        <option value="sortByDate">Latest First</option>
+                        <option value="sortByPopularity">Most Popular</option>
+                        <option value="sortByRatings">Most Ratings</option>
                     </Form.Select>
                 </Accordion.Body>
             </Accordion.Item>

@@ -3,6 +3,7 @@ import ErrorComponent from "../Utils/Error.js";
 import { Link } from "react-router-dom";
 import { Card, Container, Row, Col } from "react-bootstrap";
 import { baseImageURL } from "../../api";
+
 const ThumbnailGridComponent = ({IsPending, Err, movies}) => {
     return (
         <>
