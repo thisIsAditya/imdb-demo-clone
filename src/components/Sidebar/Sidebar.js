@@ -2,7 +2,12 @@ import Accordion from 'react-bootstrap/Accordion';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button'
-const SidebarComponent = () => {
+import { useState } from 'react';
+const SidebarComponent = ({search}) => {
+    const [SearchQuery, setSearchQuery] = useState("");
+    const handleOnChange = (e) => {
+        setSearchQuery(e.target.value);
+    }
     return ( 
         <Accordion defaultActiveKey="search">
             <Accordion.Item eventKey="search">
@@ -12,10 +17,11 @@ const SidebarComponent = () => {
                         <Form.Control
                             placeholder="Enter Movie Name"
                             aria-label="Search"
-                            aria-describedby="Search by movie name"
+                            aria-describedby="Search by movie name"                    
+                            onChange={handleOnChange}
                         />
-                        <Button variant="outline-secondary">
-                            Button
+                        <Button variant="outline-success" onClick={()=>(search(1,SearchQuery))}>
+                            Search
                         </Button>
                     </InputGroup>
                 </Accordion.Body>
