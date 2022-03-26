@@ -13,7 +13,7 @@ const Home = () => {
                         <Col lg={3}>
                             SideBar
                         </Col>
-                        <Col lg={6}>
+                        <Col lg={9}>
                             <ThumbnailGridComponent />
                         </Col>
                     </Row>
