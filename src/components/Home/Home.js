@@ -1,6 +1,7 @@
 import { Col, Container, Row } from "react-bootstrap";
 import Scroll from "../Utils/Scroll.js";
 import ThumbnailGridComponent from "../ThumbnailGrid/ThumbnailGrid.js";
+import SidebarComponent from "../Sidebar/Sidebar.js";
 
 const Home = () => {
     
@@ -11,7 +12,7 @@ const Home = () => {
                 <Container>
                     <Row>
                         <Col lg={3}>
-                            SideBar
+                            <SidebarComponent/>
                         </Col>
                         <Col lg={9}>
                             <ThumbnailGridComponent />
