@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Col, Container, Row } from "react-bootstrap";
 import Loading from "../Utils/Loading.js";
@@ -24,7 +24,7 @@ const Movie = () => {
         production_companies : []
     });
     const [Err, setErr]=useState(null);
-    useState(()=>{
+    useEffect(()=>{
         const getData= async()=>{
             const movieResponse = await getMovie(id)
             if(movieResponse.status >= 400){
@@ -37,7 +37,7 @@ const Movie = () => {
             }
         }
         getData();
-    },[]);
+    },[id]);
     return ( 
         <Scroll>
             <Container className=" py-4 rounded">
