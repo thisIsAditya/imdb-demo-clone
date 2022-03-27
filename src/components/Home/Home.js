@@ -31,6 +31,7 @@ const Home = () => {
         }
         getMovies();
     },[]);
+    
     const searchByName = async(page, query)=>{
         try{
             setmovies(null);
