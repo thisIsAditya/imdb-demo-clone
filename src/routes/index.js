@@ -8,7 +8,7 @@ const AppRoutes = ()=>{
     return(
         <Router>
             <NavbarComponent />
-            <Routes>\   
+            <Routes>   
                 <Route path="/" element={<Home/>} exact />
                 <Route path="/movie/:id" element={<Movie/>} exact />
                 <Route path="*" element={<NotFound />} />

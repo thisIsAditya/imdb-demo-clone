@@ -8,12 +8,21 @@ import Badge from 'react-bootstrap/Badge'
 import Card from "react-bootstrap/Card";
 import Stack from 'react-bootstrap/Stack'
 import Scroll from "../Utils/Scroll.js"
-
 const Movie = () => {
     const {id} = useParams();
 
     const [IsPending, setIsPending]=useState(true);
-    const [movie, setmovie]=useState(null);
+    const [movie, setmovie]=useState({
+        poster_path : "",
+        title : "",
+        vote_average : "",
+        tagline : "",
+        runtime : "",
+        overview : "",
+        release_date : "",
+        original_language : "",
+        production_companies : []
+    });
     const [Err, setErr]=useState(null);
     useState(()=>{
         const getData= async()=>{
@@ -35,7 +44,7 @@ const Movie = () => {
                 {IsPending && <Loading />}
                 {Err && <ErrorComponent err={Err} />}
                 {
-                    movie &&
+                    !IsPending && !Err && movie &&
                     <>
                     <Row className="justify-content-center">
                         <Col md={3} className="d-flex justify-content-center align-items-center border rounded border-2 mb-2 me-sm-2 border-light bg-light">
