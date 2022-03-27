@@ -1,19 +1,28 @@
 import { Col, Container, Row } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Scroll from "../Utils/Scroll.js";
 import ThumbnailGridComponent from "../ThumbnailGrid/ThumbnailGrid.js";
 import SidebarComponent from "../Sidebar/Sidebar.js";
 import {getAllMovies, getSearchByNameResults} from "../../api";
-
+import Pagination from "../Utils/Pagination.js";
 const Home = () => {
     const [IsPending, setIsPending]=useState(true);
     const [movies, setmovies]=useState(null);
     const [Err, setErr]=useState(null);
+    const [currentPage, setCurrentPage] = useState(1)
+    const [TotalPages, setTotalPages] = useState(null);
 
-    useState(()=>{
+    const changeCurrentPage = (num)=>{
+        console.log("Funciton is called", num);
+        console.log(currentPage + num);
+        setCurrentPage(currentPage + num);
+    }
+
+
+    useEffect(()=>{
         const getMovies= async()=>{
             try{
-                const moviesResponse = await getAllMovies(1)
+                const moviesResponse = await getAllMovies(currentPage);
                 if(moviesResponse.status >= 400){
                     setErr(`Error Code : ${moviesResponse.status} | Message : ${moviesResponse.message}`)
                     setIsPending(false);
@@ -22,6 +31,7 @@ const Home = () => {
                         throw new Error("No Results Found");
                     }
                     setmovies(moviesResponse.data?.data?.results)
+                    setTotalPages(moviesResponse.data?.data?.total_pages);
                     setIsPending(false);
                 }
             }catch(err){
@@ -30,7 +40,7 @@ const Home = () => {
             }
         }
         getMovies();
-    },[]);
+    },[currentPage]);
     
     const searchByName = async(page, query)=>{
         try{
@@ -79,11 +89,16 @@ const Home = () => {
                                 sortByPopularity={sortByPopularity} 
                                 sortByRatings={sortByRatings} 
                             />
+                            {
+                                TotalPages &&
+                                <Pagination currentPage={currentPage} totalPages = {TotalPages} changeCurrentPage={changeCurrentPage} />
+
+                            }
                         </Col>
                         <Col lg={9}>
                             <ThumbnailGridComponent IsPending={IsPending} Err={Err} movies={movies} />
                         </Col>
-                    </Row>
+                    </Row>                        
                 </Container>
             </Scroll> 
         </Container>
